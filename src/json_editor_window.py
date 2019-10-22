@@ -8,7 +8,7 @@ from layout_addendum import LayoutAddendum
 from utility import list_to_dict
 
 
-class DynamicJsonEditorWindow:
+class JsonEditorWindow:
     def __init__(self, json: dict = {}, layout_addendum: LayoutAddendum = LayoutAddendum(), window_title: str = "",
                  custom_event_handlers: List[CustomEventHandler] = []):
         self.custom_event_handlers = custom_event_handlers
@@ -70,7 +70,7 @@ class DynamicJsonEditorWindow:
 
                     if response.handled:
                         handled = True
-                        if response.should_close:
+                        if response.should_relaunch:
                             window.close()
                             return self.launch(response.values)
 
@@ -89,6 +89,6 @@ if __name__ is '__main__':
                         footer=             [[ui.Text("footer")]]
                         )
 
-    dje = DynamicJsonEditorWindow({'a': 'b'}, window_title="title", layout_addendum=la)
+    dje = JsonEditorWindow({'a': 'b'}, window_title="title", layout_addendum=la)
     returned = dje.launch()
     print("returned: " + str(returned))
