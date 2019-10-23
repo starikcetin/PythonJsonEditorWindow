@@ -1,11 +1,70 @@
-from typing import List
+import copy
+from typing import Callable, List
 
 import PySimpleGUI as ui
 
-from custom_event_handler import CustomEventHandler
-from event_params import EventParams
-from layout_addendum import LayoutAddendum
-from utility import list_to_dict
+
+def list_to_dict(lst: list) -> dict:
+    res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
+    return res_dct
+
+
+class EventParams:
+    def __init__(self, event: str, values):
+        self.values = values
+        self.event = event
+
+
+class EventResponse:
+    def __init__(self, handled: bool, should_relaunch: bool, values):
+        self.should_relaunch = should_relaunch
+        self.values = values
+        self.handled = handled
+
+
+class CustomEventHandler:
+    def __init__(self, event_name: str, handler: Callable[[EventParams], EventResponse]):
+        self.event_name = event_name
+        self.handler = handler
+
+    def handle(self, params: EventParams) -> EventResponse:
+        if params.event is self.event_name:
+            return self.handler(params)
+        else:
+            return EventResponse(False, False, params.values)
+
+
+class LayoutAddendum:
+    def __init__(self,
+                 header: List[List[ui.Element]] = None,
+                 after_list: List[List[ui.Element]] = None,
+                 after_plus_button: List[List[ui.Element]] = None,
+                 footer: List[List[ui.Element]] = None
+                 ):
+        self.header = lambda: copy.deepcopy(header)
+        self.after_list = lambda: copy.deepcopy(after_list)
+        self.after_plus_button = lambda: copy.deepcopy(after_plus_button)
+        self.footer = lambda: copy.deepcopy(footer)
+
+    def append_header_to(self, layout: List[List[ui.Element]]) -> List[List[ui.Element]]:
+        if self.header() is None:
+            return layout
+        return layout + self.header()
+
+    def append_after_list_to(self, layout: List[List[ui.Element]]) -> List[List[ui.Element]]:
+        if self.after_list() is None:
+            return layout
+        return layout + self.after_list()
+
+    def append_after_plus_button_to(self, layout: List[List[ui.Element]]) -> List[List[ui.Element]]:
+        if self.after_plus_button() is None:
+            return layout
+        return layout + self.after_plus_button()
+
+    def append_footer_to(self, layout: List[List[ui.Element]]) -> List[List[ui.Element]]:
+        if self.footer() is None:
+            return layout
+        return layout + self.footer()
 
 
 class JsonEditorWindow:
@@ -83,12 +142,13 @@ class JsonEditorWindow:
 
 
 if __name__ is '__main__':
-    la = LayoutAddendum(header=             [[ui.Text("header")]],
-                        after_list=         [[ui.Text("after list")]],
-                        after_plus_button=  [[ui.Text("after plus button")]],
-                        footer=             [[ui.Text("footer")]]
+    la = LayoutAddendum(header=[[ui.Text("header")]],
+                        after_list=[[ui.Text("after list")]],
+                        after_plus_button=[[ui.Text("after plus button")]],
+                        footer=[[ui.Text("footer")]]
                         )
 
-    dje = JsonEditorWindow({'a': 'b'}, window_title="title", layout_addendum=la)
+    dje = JsonEditorWindow(
+        {'a': 'b'}, window_title="title", layout_addendum=la)
     returned = dje.launch()
     print("returned: " + str(returned))
