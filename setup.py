@@ -18,7 +18,7 @@ def load_requirements(fname):
 
 setup(
     name="PythonJsonEditorWindow",
-    version="0.0.4",
+    version="0.0.5",
 
     # metadata to display on PyPI
     author="starikcetin <cetinsamedtarik@gmail.com> (https://github.com/starikcetin)",
