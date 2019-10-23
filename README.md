@@ -1,8 +1,8 @@
-# python-json-editor-window
+# PythonJsonEditorWindow
 A GUI window for editing JSON files using Python.
 
-	pip install python-json-editor-window
+	pip install PythonJsonEditorWindow
 
-https://pypi.org/project/python-json-editor-window/
+https://pypi.org/project/PythonJsonEditorWindow/
 
 MIT license

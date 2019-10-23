@@ -17,7 +17,7 @@ def load_requirements(fname):
 
 
 setup(
-    name="python-json-editor-window",
+    name="PythonJsonEditorWindow",
     version="0.0.1",
 
     # metadata to display on PyPI
@@ -25,7 +25,7 @@ setup(
     author_email="cetinsamedtarik@gmail.com",
     description="A GUI window for editing JSON files using Python.",
     keywords="python json editor window gui ui",
-    url="https://github.com/starikcetin/python-json-editor-window",
+    url="https://github.com/starikcetin/PythonJsonEditorWindow",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
